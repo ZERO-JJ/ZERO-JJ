@@ -1,2 +1,2 @@
 RNA pseudouridine, as an important modification on RNA molecules, has a profound impact on the structure and function of RNA. Its wide distribution in organisms and multiple biological functions, such as enhancing transcript stability and participating in codon recognition, make the accurate identification of pseudouridine an important topic in biological research.
-To identify RNA pseudouridine more efficiently, we propose a new prediction model as RSCNN-PseU, and we open the related code and data.
+To identify RNA pseudouridine more efficiently, we propose a new prediction model as RSCNN-PseU, and we make the related code and data publicly available.
