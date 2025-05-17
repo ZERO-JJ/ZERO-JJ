@@ -1,0 +1,98 @@
+#读取文件
+from Bio import SeqIO
+import pandas as pd
+import numpy as np
+meta = []
+sequence = []
+label=[]
+i=0
+seq = (r"C:\Users\86153\Desktop\M. musculus.fasta")
+for seq_record in SeqIO.parse(seq, "fasta"):
+    meta.append(str(seq_record.id))
+    sequence.append(str(seq_record.seq))
+    i=1+i
+    label.append(int(i))
+    # print(sequence)
+    df = pd.DataFrame(data={ 'SequenceID': sequence}) 
+    print(df)
+print(list(df.iloc[0][0]))
+print(df)
+print(meta)
+import numpy as np
+ll=[]
+for i in range(len(df)):
+    ll.append(len(list(df.iloc[i][0])))
+LM=max(ll)
+LMI=min(ll)
+print(LM)
+print(LMI)
+
+def dft(x):
+    x = np.asarray(x, dtype=float)                                  
+    N = x.shape[0]                                                  
+    n = np.arange(N)                                                
+    k = n.reshape((N, 1))                                           
+    M = np.exp(-2j * np.pi * k * n / N)                             
+    return np.dot(M, x)     
+
+def TZ(data):
+    ss=list(range(40))
+    for n in range(len(data)):
+        x=data.iloc[n][0]
+        t=[]
+        for i in range(len(x)-1):
+            if x[i:i+2]=='AA':
+                t.append([-0.93,0.04])
+            elif x[i:i+2]=='AU':
+                t.append([-1.1,0.14])
+            elif x[i:i+2]=='AC':
+               t.append([-2.24,0.14])
+            elif x[i:i+2]=='AG':
+               t.append([-2.08,0.08])
+            elif x[i:i+2]=='UA':
+               t.append([-1.33,0.21])
+            elif x[i:i+2]=='UU':
+               t.append([-0.93,0.44])
+            elif x[i:i+2]=='UC':
+               t.append([-2.35,0.48])
+            elif x[i:i+2]=='UG':
+               t.append([-2.11,0.34])
+            elif x[i:i+2]=='CA':
+               t.append([-2.11,0.21])
+            elif x[i:i+2]=='CU':
+               t.append([-2.08,0.52])
+            elif x[i:i+2]=='CC':
+               t.append([-3.26,0.49])
+            elif x[i:i+2]=='CG':
+               t.append([-2.36,0.35])
+            elif x[i:i+2]=='GA':
+               t.append([-2.35,0.1])
+            elif x[i:i+2]=='GU':
+               t.append([2.24,0.27])
+            elif x[i:i+2]=='GC':
+               t.append([-3.42,0.26])
+            elif x[i:i+2]=='GG':
+               t.append([-3.26,0.17])
+        t=np.array(t)  
+        t=t.T
+        res=[]
+        for i in range(2):
+            aa=dft(t[i:i+1,:])
+            bb=aa.real
+            cc=aa.imag
+            for i in range(len(aa)):
+                res.append(aa[i])  
+        resl=[]
+        aaa=dft(res)
+        bbb=aaa.real
+        ccc=aaa.imag
+        for i in range(len(bbb)):
+            resl.append(((bbb[i]**2)+(ccc[i]**2))**(1/2))   
+        s=np.hstack((res))
+        ss=np.vstack((ss,s))
+    ss=pd.DataFrame(ss)
+    ss=ss.drop([0],axis=0)
+    print(ss)
+    return(ss)
+x=TZ(df)
+x=pd.DataFrame(x)
